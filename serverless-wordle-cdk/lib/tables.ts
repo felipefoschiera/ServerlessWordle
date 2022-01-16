@@ -17,7 +17,8 @@ export function createTables(scope: Construct, props: TableProps): WordleTables 
 function createGame(scope: Construct, { functions }: TableProps): Table {
     const table = new Table(scope, 'Game', {
         tableName: 'Game',
-        partitionKey: { name: 'id', type: AttributeType.STRING },
+        partitionKey: { name: 'date', type: AttributeType.STRING },
+        sortKey: { name: 'timestamp', type: AttributeType.NUMBER },
         billingMode: BillingMode.PAY_PER_REQUEST,
     });
 
@@ -53,18 +54,18 @@ function createWordGuess(scope: Construct, { functions }: TableProps): Table {
     const table = new Table(scope, 'WordGuess', {
         tableName: 'WordGuess',
         partitionKey: {
-            name: 'game',
+            name: 'game_userid',
             type: AttributeType.STRING,
         },
         sortKey: {
-            name: 'user_id',
-            type: AttributeType.STRING
+            name: 'guess_number',
+            type: AttributeType.NUMBER
         },
         billingMode: BillingMode.PAY_PER_REQUEST,
     });
 
     table.grantReadData(functions.gameStarter);
-    table.grantWriteData(functions.wordGuesser);
+    table.grantReadWriteData(functions.wordGuesser);
 
     return table;
 }

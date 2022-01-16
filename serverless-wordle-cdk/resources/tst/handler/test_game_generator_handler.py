@@ -18,14 +18,22 @@ class TestGameGenerator(unittest.TestCase):
             TableName='Game',
             KeySchema=[
                 {
-                    'AttributeName': 'id',
+                    'AttributeName': 'date',
                     'KeyType': 'HASH'
+                },
+                {
+                    'AttributeName': 'timestamp',
+                    'KeyType': 'RANGE'
                 }
             ],
             AttributeDefinitions=[
                 {
-                    'AttributeName': 'id',
+                    'AttributeName': 'date',
                     'AttributeType': 'S'
+                },
+                {
+                    'AttributeName': 'timestamp',
+                    'AttributeType': 'N'
                 }
             ]
         )
@@ -66,9 +74,9 @@ class TestGameGenerator(unittest.TestCase):
 
     def test_create_game(self):
         expected_game = {
-            'id': unittest.mock.ANY,
-            'word': self.TEST_WORD,
-            'timestamp': unittest.mock.ANY
+            'date': unittest.mock.ANY,
+            'timestamp': unittest.mock.ANY,
+            'word': self.TEST_WORD
         }
         new_game = game_generator_handler.create_game(self.TEST_WORD, self.dynamodb)
 

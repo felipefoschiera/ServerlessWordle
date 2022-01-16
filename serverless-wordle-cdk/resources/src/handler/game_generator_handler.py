@@ -2,6 +2,7 @@ import logging
 import random
 import time
 import boto3
+from datetime import date
 from boto3.dynamodb.conditions import Key
 
 logger = logging.getLogger()
@@ -12,10 +13,12 @@ def create_game(random_word: str, dynamodb: boto3.resource) -> dict:
     game_table = dynamodb.Table('Game')
     timestamp = int(time.time())
 
+    today = date.today().strftime('%d-%m-%Y')
+
     new_game = {
-        'id': str(game_table.item_count),
+        'date': today,
+        'timestamp': timestamp,
         'word': random_word,
-        'timestamp': timestamp
     }
 
     game_table.put_item(Item=new_game)
