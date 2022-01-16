@@ -8,7 +8,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def create_game(random_word: str, dynamodb: boto3.resource) -> None:
+def create_game(random_word: str, dynamodb: boto3.resource) -> dict:
     game_table = dynamodb.Table('Game')
     timestamp = int(time.time())
 
