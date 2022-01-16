@@ -22,6 +22,7 @@ def create_game(random_word: str, dynamodb: boto3.resource) -> None:
 
     logging.info(f'New game: {new_game}')
 
+    return new_game
 
 def error_message(message: str) -> str:
     return {
