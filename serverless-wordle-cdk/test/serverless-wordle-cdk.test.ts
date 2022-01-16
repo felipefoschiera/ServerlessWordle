@@ -21,3 +21,23 @@ test('DynamoDB Tables Created', () => {
         TableName: "WordGuess"
     });
 });
+
+test('Lambda Functions Created', () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new ServerlessWordleCdk.ServerlessWordleCdkStack(app, 'MyTestStack');
+    // THEN
+    const template = Template.fromStack(stack);
+
+    template.hasResourceProperties('AWS::Lambda::Function', {
+        FunctionName: 'GameGenerator'
+    });
+
+    template.hasResourceProperties('AWS::Lambda::Function', {
+        FunctionName: 'GameStarter'
+    });
+
+    template.hasResourceProperties('AWS::Lambda::Function', {
+        FunctionName: 'WordGuesser'
+    });
+})
