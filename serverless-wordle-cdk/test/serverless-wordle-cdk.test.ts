@@ -40,7 +40,11 @@ test('Lambda Functions Created', () => {
     template.hasResourceProperties('AWS::Lambda::Function', {
         FunctionName: 'WordGuesser'
     });
-})
+
+    template.hasResourceProperties('AWS::Lambda::Function', {
+        FunctionName: 'WordUploader'
+    })
+});
 
 test('Event Rules Created', () => {
     const app = new cdk.App();
@@ -53,4 +57,17 @@ test('Event Rules Created', () => {
         Name: 'GameGeneratorTriggerRule'
     });
 
-})
+});
+
+test('Buckets Created', () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new ServerlessWordleCdk.ServerlessWordleCdkStack(app, 'MyTestStack');
+    // THEN
+    const template = Template.fromStack(stack);
+
+    template.hasResourceProperties('AWS::S3::Bucket', {
+        BucketName: 'wordlegame-word-list'
+    });
+
+});

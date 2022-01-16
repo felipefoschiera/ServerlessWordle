@@ -1,8 +1,9 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { WordleStackResources } from './props';
-import { createTables } from './tables';
+import { createBuckets } from './buckets';
 import { createFunctions } from './functions';
+import { createTables } from './tables';
 import { createRules } from './rules';
 
 export class ServerlessWordleCdkStack extends Stack {
@@ -11,11 +12,13 @@ export class ServerlessWordleCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const functions = createFunctions(this);
+    const buckets = createBuckets(this);
+    const functions = createFunctions(this, { buckets });
     const tables = createTables(this, { functions });
     const rules = createRules(this, { functions });
 
     this.resources = {
+      buckets,
       tables,
       functions,
       rules,
