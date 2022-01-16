@@ -13,15 +13,16 @@ def load_words(words, dynamodb=None):
 
     print(f"Counter starting in {counter}")
 
-    for word in words:
-        progress += 1
-        print(f"Adding word {word} ({progress}/{total_words})")
-        table.put_item(Item={'id': str(counter), 'word': word})
-        counter += 1
+    with table.batch_writer() as batch:
+        for word in words:
+            progress += 1
+            print(f"Adding word {word} ({progress}/{total_words})")
+            batch.put_item(Item={'id': str(counter), 'word': word})
+            counter += 1
 
 
 if __name__ == '__main__':
-    with open("data/sgb-words-sample.txt") as words_file:
+    with open("data/sgb-words.txt") as words_file:
         words_list = [word.strip() for word in words_file]
 
     load_words(words_list)
