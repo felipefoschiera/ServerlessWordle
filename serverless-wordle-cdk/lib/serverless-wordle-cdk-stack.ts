@@ -11,8 +11,8 @@ export class ServerlessWordleCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const tables = createTables(this);
     const functions = createFunctions(this);
+    const tables = createTables(this, { functions });
     const rules = createRules(this, { functions });
 
     this.resources = {
