@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import { WordleStackResources } from './props';
 import { createTables } from './tables';
 import { createFunctions } from './functions';
+import { createRules } from './rules';
 
 export class ServerlessWordleCdkStack extends Stack {
   public readonly resources: WordleStackResources;
@@ -12,10 +13,12 @@ export class ServerlessWordleCdkStack extends Stack {
 
     const tables = createTables(this);
     const functions = createFunctions(this);
+    const rules = createRules(this, { functions });
 
     this.resources = {
       tables,
       functions,
+      rules,
     };
   }
 }

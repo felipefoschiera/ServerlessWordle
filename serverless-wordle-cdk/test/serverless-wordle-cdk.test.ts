@@ -41,3 +41,16 @@ test('Lambda Functions Created', () => {
         FunctionName: 'WordGuesser'
     });
 })
+
+test('Event Rules Created', () => {
+    const app = new cdk.App();
+    // WHEN
+    const stack = new ServerlessWordleCdk.ServerlessWordleCdkStack(app, 'MyTestStack');
+    // THEN
+    const template = Template.fromStack(stack);
+
+    template.hasResourceProperties('AWS::Events::Rule', {
+        Name: 'GameGeneratorTriggerRule'
+    });
+
+})
