@@ -1,4 +1,4 @@
-import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import { AttributeType, BillingMode, ProjectionType, Table } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 import { WordleTables } from "./props";
 
@@ -19,11 +19,19 @@ function createGame(scope: Construct): Table {
 }
 
 function createWord(scope: Construct): Table {
-    return new Table(scope, 'Word', {
+    const table = new Table(scope, 'Word', {
         tableName: 'Word',
         partitionKey: { name: 'id', type: AttributeType.STRING },
         billingMode: BillingMode.PAY_PER_REQUEST,
     });
+
+    table.addGlobalSecondaryIndex({
+        indexName: 'QueryByWord',
+        partitionKey: { name: 'word', type: AttributeType.STRING },
+        projectionType: ProjectionType.ALL,
+    });
+
+    return table;
 }
 
 function createWordGuess(scope: Construct): Table {
