@@ -37,6 +37,10 @@ function createGameStarter(scope: Construct): Function {
         runtime: Runtime.PYTHON_3_9,
         code: Code.fromAsset('resources/src/handler'),
         handler: 'game_starter_handler.handler',
+        environment: {
+            GAME_TABLE_NAME: "Game",
+            WORD_TABLE_NAME: "Word"
+        }
     });
 }
 

@@ -1,5 +1,7 @@
 package com.serverlesswordle.config.module;
 
+import com.serverlesswordle.repository.GameRepository;
+import com.serverlesswordle.repository.WordRepository;
 import com.serverlesswordle.service.GameGeneratorService;
 import com.serverlesswordle.service.GameGeneratorServiceImpl;
 import dagger.Module;
@@ -13,7 +15,7 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    static GameGeneratorService provideGameGeneratorService() {
-        return new GameGeneratorServiceImpl();
+    static GameGeneratorService provideGameGeneratorService(GameRepository gameRepository, WordRepository wordRepository) {
+        return new GameGeneratorServiceImpl(gameRepository, wordRepository);
     }
 }

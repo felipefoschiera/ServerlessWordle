@@ -1,5 +1,7 @@
 package com.serverlesswordle.config.component;
 
+import com.serverlesswordle.config.module.EnvModule;
+import com.serverlesswordle.config.module.RepositoryModule;
 import com.serverlesswordle.config.module.ServiceModule;
 import com.serverlesswordle.service.GameGeneratorService;
 import dagger.Component;
@@ -7,7 +9,7 @@ import dagger.Component;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = {ServiceModule.class})
+@Component(modules = {EnvModule.class, RepositoryModule.class, ServiceModule.class})
 public interface HandlerComponent {
 
     /**
