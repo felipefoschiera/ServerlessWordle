@@ -7,9 +7,9 @@ import com.serverlesswordle.config.component.HandlerComponent;
 import com.serverlesswordle.service.GameGeneratorService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @AllArgsConstructor
 public class GameGeneratorHandler implements RequestHandler<Object, String> {
 
@@ -24,7 +24,7 @@ public class GameGeneratorHandler implements RequestHandler<Object, String> {
 
     @Override
     public String handleRequest(Object input, Context context) {
-        log.info("This is my log");
+        log.info("Started request handler!");
         gameGeneratorService.generateGame();
         return "Hello World!";
     }
