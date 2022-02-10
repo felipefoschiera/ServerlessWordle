@@ -6,5 +6,12 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
-
 __pycache__
+
+# Gradle / Java
+resources/assets
+bin/
+build/
+.gradle
+.idea
+!gradle-wapper.jar
