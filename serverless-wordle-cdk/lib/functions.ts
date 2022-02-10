@@ -1,5 +1,6 @@
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import { S3EventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { EventType } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import { WordleBuckets, WordleFunctions } from './props';
@@ -21,9 +22,11 @@ function createGameGenerator(scope: Construct): Function {
     return new Function(scope, 'GameGenerator', {
         functionName: 'GameGenerator',
         description: 'Lambda function triggered daily to generate a new game',
-        runtime: Runtime.PYTHON_3_9,
-        code: Code.fromAsset('resources/src/handler'),
-        handler: 'game_generator_handler.handler',
+        runtime: Runtime.JAVA_11,
+        code: Code.fromAsset('resources/assets/java-lambda.zip'),
+        handler: 'com.serverlesswordle.handler.GameGeneratorHandler::handleRequest',
+        memorySize: 256,
+        logRetention: RetentionDays.ONE_WEEK,
     });
 }
 
