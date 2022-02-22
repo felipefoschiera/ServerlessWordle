@@ -28,7 +28,7 @@ public class GameGeneratorHandlerTest {
     }
 
     @Test
-    public void testHandleRequest() {
+    public void testHandleRequest() throws Exception {
         handler.handleRequest(new Object(), context);
         log.info("Started test!");
         verify(gameGeneratorService, times(1)).generateGame();

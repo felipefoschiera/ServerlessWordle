@@ -1,8 +1,6 @@
 package com.serverlesswordle.model.dto;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +18,7 @@ public class GameDTO {
     @DynamoDBHashKey
     private String date;
     @DynamoDBRangeKey
-    private Number timestamp;
+    private long timestamp;
 
     private String word;
 }

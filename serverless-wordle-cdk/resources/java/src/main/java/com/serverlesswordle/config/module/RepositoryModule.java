@@ -14,6 +14,7 @@ import com.serverlesswordle.repository.WordRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Module
@@ -37,20 +38,20 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    static GameRepository provideGameRepository(IDynamoDBMapper dynamoDBMapper) {
-        return new GameRepositoryImpl(dynamoDBMapper);
+    static GameRepository provideGameRepository(IDynamoDBMapper dynamoDBMapper, @Named("GameTableName") String tableName) {
+        return new GameRepositoryImpl(dynamoDBMapper, tableName);
     }
 
     @Provides
     @Singleton
-    static WordRepository provideWordRepository(IDynamoDBMapper dynamoDBMapper) {
-        return new WordRepositoryImpl(dynamoDBMapper);
+    static WordRepository provideWordRepository(IDynamoDBMapper dynamoDBMapper, @Named("WordTableName") String tableName) {
+        return new WordRepositoryImpl(dynamoDBMapper, tableName);
     }
 
     private static String getTableNameResolver(Class<?> dtoClass, DynamoDBMapperConfig config) {
         if (dtoClass.equals(GameDTO.class)) {
             return System.getenv("GAME_TABLE_NAME");
-        }else if(dtoClass.equals(WordDTO.class)) {
+        } else if (dtoClass.equals(WordDTO.class)) {
             return System.getenv("WORD_TABLE_NAME");
         }
         throw new UnsupportedOperationException(String.format("Unknown class %s", dtoClass));

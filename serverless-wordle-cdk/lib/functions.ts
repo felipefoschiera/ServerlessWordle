@@ -1,3 +1,4 @@
+import { Duration } from "aws-cdk-lib";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import { S3EventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
@@ -25,8 +26,13 @@ function createGameGenerator(scope: Construct): Function {
         runtime: Runtime.JAVA_11,
         code: Code.fromAsset('resources/assets/java-lambda.zip'),
         handler: 'com.serverlesswordle.handler.GameGeneratorHandler::handleRequest',
-        memorySize: 256,
+        memorySize: 512,
+        timeout: Duration.minutes(5),
         logRetention: RetentionDays.ONE_WEEK,
+        environment: {
+            GAME_TABLE_NAME: "Game",
+            WORD_TABLE_NAME: "Word"
+        }
     });
 }
 
@@ -37,10 +43,9 @@ function createGameStarter(scope: Construct): Function {
         runtime: Runtime.PYTHON_3_9,
         code: Code.fromAsset('resources/src/handler'),
         handler: 'game_starter_handler.handler',
-        environment: {
-            GAME_TABLE_NAME: "Game",
-            WORD_TABLE_NAME: "Word"
-        }
+        memorySize: 512,
+        timeout: Duration.minutes(5),
+
     });
 }
 
@@ -51,6 +56,8 @@ function createWordGuesser(scope: Construct): Function {
         runtime: Runtime.PYTHON_3_9,
         code: Code.fromAsset('resources/src/handler'),
         handler: 'word_guesser_handler.handler',
+        memorySize: 512,
+        timeout: Duration.minutes(5),
     });
 }
 
@@ -61,6 +68,8 @@ function createWordUploader(scope: Construct, { buckets }: FunctionProps): Funct
         runtime: Runtime.PYTHON_3_9,
         code: Code.fromAsset('resources/src/handler'),
         handler: 'word_uploader_handler.handler',
+        memorySize: 512,
+        timeout: Duration.minutes(5),
     });
 
     const s3PutEventSource = new S3EventSource(buckets.wordList, {
